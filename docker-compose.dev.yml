@@ -1,0 +1,58 @@
+version:  '3.0'
+services:
+
+  mysql:
+    image: mysql
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      - ./data/mysql:/var/lib/mysql:rw
+      - ./logs/mysql:/var/lib/mysql-logs:rw
+      # - ./dockerfiles/mysql/conf.d:/etc/mysql/conf.d:ro
+    command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: 123456
+        # MYSQL_DATABASE: lottery_api_sale
+        # MYSQL_USER: zhaojun
+        # MYSQL_PASSWORD: zhaojun
+    ports:
+      - 3306:3306
+    # deploy:
+    #   restart_policy:
+    #     condition: any
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 6600:8080
+
+  redis-db:
+    image: redis
+    volumes:
+      - ./data/redis:/data
+      # - /etc/localtime:/etc/localtime:ro
+    # deploy:
+    #   restart_policy:
+    #     condition: any
+    ports:
+      - 6379:6379
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 7700:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+
