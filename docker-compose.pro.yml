@@ -51,6 +51,7 @@ services:
     ports:
       - 27017:27017
 
+
   mongo-express:
     image: mongo-express
     restart: always
@@ -60,4 +61,21 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
       ME_CONFIG_MONGODB_URL: mongodb://root:123456@mongo:27017/
+
+
+  # https://zhuanlan.zhihu.com/p/554864824
+  dolphindb:
+    image: dolphindb/dolphindb-arm64:v3.00.0
+    restart: always
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      - ./data/dolphindb/etc:/dolphindb/etc:rw
+      - ./data/dolphindb/data:/data/ddb/server/data:rw
+    ports:
+      - 8848:8848
+
+
+networks:
+  mynetwork:
+    driver: bridge
 
