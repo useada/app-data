@@ -49,7 +49,7 @@ services:
       # MYSQL_USER: zhaojun
       # MYSQL_PASSWORD: zhaojun
     ports:
-      - 3306:3306
+      - 23306:3306
     # deploy:
     #   restart_policy:
     #     condition: any
@@ -60,7 +60,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 6600:8080
+      - 28080:8080
     networks:
       - app-data
 
