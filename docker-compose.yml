@@ -1,31 +1,31 @@
 # version:  '3.0'
 services:
 
-  # mysql:
-  #   image: mysql
-  #   volumes:
-  #     # - /etc/localtime:/etc/localtime:ro
-  #     - ./data/mysql:/var/lib/mysql:rw
-  #     - ./logs/mysql:/var/lib/mysql-logs:rw
-  #     # - ./dockerfiles/mysql/conf.d:/etc/mysql/conf.d:ro
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   # restart: always
-  #   environment:
-  #       MYSQL_ROOT_PASSWORD: 123456
-  #       # MYSQL_DATABASE: lottery_api_sale
-  #       # MYSQL_USER: zhaojun
-  #       # MYSQL_PASSWORD: zhaojun
-  #   ports:
-  #     - 3306:3306
-  #   # deploy:
-  #   #   restart_policy:
-  #   #     condition: any
+  mysql:
+    image: mysql
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      - ./data/mysql:/var/lib/mysql:rw
+      - ./logs/mysql:/var/lib/mysql-logs:rw
+      # - ./dockerfiles/mysql/conf.d:/etc/mysql/conf.d:ro
+    command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: 123456
+        # MYSQL_DATABASE: lottery_api_sale
+        # MYSQL_USER: zhaojun
+        # MYSQL_PASSWORD: zhaojun
+    ports:
+      - 3306:3306
+    # deploy:
+    #   restart_policy:
+    #     condition: any
 
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 6600:8080
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 6600:8080
 
   # redis-db:
   #   image: redis
@@ -74,42 +74,42 @@ services:
   #   ports:
   #     - 8848:8848
 
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
-      PGDATA: /data/postgres
-    volumes:
-       - ./data/postgres/data:/data/postgres
-    ports:
-      - "5432:5432"
-    networks:
-      - mynetwork
-    restart: unless-stopped
+  # postgres:
+  #   container_name: postgres_container
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER:-postgres}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+  #     PGDATA: /data/postgres
+  #   volumes:
+  #      - ./data/postgres:/data/postgres
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - mynetwork
+  #   restart: unless-stopped
   
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-       - ./data/pgadmin/data:/var/lib/pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - mynetwork
-    restart: unless-stopped
+  # pgadmin:
+  #   container_name: pgadmin_container
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #   volumes:
+  #      - ./data/pgadmin:/var/lib/pgadmin
+  #   ports:
+  #     - "${PGADMIN_PORT:-5050}:80"
+  #   networks:
+  #     - mynetwork
+  #   restart: unless-stopped
 
   tdengine:
     image: tdengine/tdengine:latest
     restart: always
     volumes:
-      - ./data/tdengine/data:/var/lib/taos:rw
-      - ./logs/tdengine/log:/var/log/taos:rw
+      - ./data/tdengine:/var/lib/taos:rw
+      - ./logs/tdengine:/var/log/taos:rw
     ports:
       - 6030:6030
       - 6041:6041
