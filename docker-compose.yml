@@ -1,31 +1,29 @@
 # version:  '3.0'
 services:
 
-  mysql:
-    image: mysql
-    volumes:
-      # - /etc/localtime:/etc/localtime:ro
-      - ./data/mysql:/var/lib/mysql:rw
-      - ./logs/mysql:/var/lib/mysql-logs:rw
-      # - ./dockerfiles/mysql/conf.d:/etc/mysql/conf.d:ro
-    command: --default-authentication-plugin=mysql_native_password
-    # restart: always
-    environment:
-        MYSQL_ROOT_PASSWORD: 123456
-        # MYSQL_DATABASE: lottery_api_sale
-        # MYSQL_USER: zhaojun
-        # MYSQL_PASSWORD: zhaojun
-    ports:
-      - 3306:3306
-    # deploy:
-    #   restart_policy:
-    #     condition: any
+  # mysql:
+  #   image: mysql
+  #   volumes:
+  #     # - /etc/localtime:/etc/localtime:ro
+  #     - ./data/mysql:/var/lib/mysql:rw
+  #     - ./logs/mysql:/var/lib/mysql-logs:rw
+  #   # restart: always
+  #   environment:
+  #       MYSQL_ROOT_PASSWORD: 123456
+  #       # MYSQL_DATABASE: lottery_api_sale
+  #       # MYSQL_USER: zhaojun
+  #       # MYSQL_PASSWORD: zhaojun
+  #   ports:
+  #     - 3306:3306
+  #   # deploy:
+  #   #   restart_policy:
+  #   #     condition: any
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 6600:8080
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 6600:8080
 
   # redis-db:
   #   image: redis
@@ -64,15 +62,15 @@ services:
 
 
   # https://zhuanlan.zhihu.com/p/554864824
-  # dolphindb:
-  #   image: dolphindb/dolphindb-arm64:v3.00.0
-  #   restart: always
-  #   volumes:
-  #     # - /etc/localtime:/etc/localtime:ro
-  #     - ./data/dolphindb/etc:/dolphindb/etc:rw
-  #     - ./data/dolphindb/data:/data/ddb/server/data:rw
-  #   ports:
-  #     - 8848:8848
+  dolphindb:
+    image: dolphindb/dolphindb-arm64:v3.00.0
+    # restart: always
+    volumes:
+      - ./data/dolphindb/etc:/dolphindb/etc:rw
+      - ./data/dolphindb/data:/data/ddb/server/data:rw
+      - ./data/dolphindb/plugins:/data/ddb/server/plugins:rw
+    ports:
+      - 8848:8848
 
   # postgres:
   #   container_name: postgres_container
@@ -82,7 +80,7 @@ services:
   #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
   #     PGDATA: /data/postgres
   #   volumes:
-  #      - ./data/postgres:/data/postgres
+  #      - ./data/postgres/data:/data/postgres
   #   ports:
   #     - "5432:5432"
   #   networks:
@@ -97,26 +95,26 @@ services:
   #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
   #     PGADMIN_CONFIG_SERVER_MODE: 'False'
   #   volumes:
-  #      - ./data/pgadmin:/var/lib/pgadmin
+  #      - ./data/pgadmin/data:/var/lib/pgadmin
   #   ports:
   #     - "${PGADMIN_PORT:-5050}:80"
   #   networks:
   #     - mynetwork
   #   restart: unless-stopped
 
-  tdengine:
-    image: tdengine/tdengine:latest
-    restart: always
-    volumes:
-      - ./data/tdengine:/var/lib/taos:rw
-      - ./logs/tdengine:/var/log/taos:rw
-    ports:
-      - 6030:6030
-      - 6041:6041
-      - 6043-6060:6043-6060
-      - 6043-6060:6043-6060/udp
-    networks:
-      - mynetwork
+  # tdengine:
+  #   image: tdengine/tdengine:latest
+  #   restart: always
+  #   volumes:
+  #     - ./data/tdengine/data:/var/lib/taos:rw
+  #     - ./logs/tdengine/log:/var/log/taos:rw
+  #   ports:
+  #     - 6030:6030
+  #     - 6041:6041
+  #     - 6043-6060:6043-6060
+  #     - 6043-6060:6043-6060/udp
+  #   networks:
+  #     - mynetwork
 
 
 networks:
