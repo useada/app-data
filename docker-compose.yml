@@ -64,43 +64,49 @@ services:
   # https://zhuanlan.zhihu.com/p/554864824
   dolphindb:
     image: dolphindb/dolphindb-arm64:v3.00.0
+    # environment:
+    #   - TZ=Asia/Shanghai  # 设置时区为上海
     # restart: always
     volumes:
+      - /etc/localtime:/etc/localtime:ro  # 挂载宿主机的时区文件
+      - /etc/timezone:/etc/timezone:ro      # 可选，挂载时区信息
       - ./data/dolphindb/etc:/dolphindb/etc:rw
       - ./data/dolphindb/data:/data/ddb/server/data:rw
       - ./data/dolphindb/plugins:/data/ddb/server/plugins:rw
     ports:
       - 8848:8848
+    networks:
+      - mynetwork
 
-  # postgres:
-  #   container_name: postgres_container
-  #   image: postgres
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER:-postgres}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
-  #     PGDATA: /data/postgres
-  #   volumes:
-  #      - ./data/postgres/data:/data/postgres
-  #   ports:
-  #     - "5432:5432"
-  #   networks:
-  #     - mynetwork
-  #   restart: unless-stopped
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      PGDATA: /data/postgres
+    volumes:
+       - ./data/postgres/data:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+    restart: unless-stopped
   
-  # pgadmin:
-  #   container_name: pgadmin_container
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
-  #   volumes:
-  #      - ./data/pgadmin/data:/var/lib/pgadmin
-  #   ports:
-  #     - "${PGADMIN_PORT:-5050}:80"
-  #   networks:
-  #     - mynetwork
-  #   restart: unless-stopped
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - ./data/pgadmin/data:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - mynetwork
+    restart: unless-stopped
 
   # tdengine:
   #   image: tdengine/tdengine:latest
